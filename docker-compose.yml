@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+    nginx:
+        image: nginx:latest
+        volumes:
+            - ./:/var/www
+            - ./_docker/nginx:/etc/nginx/conf.d
+        ports:
+            - 80:80
+        depends_on:
+            - app
+        container_name: nginx
+
+    app:
+        build: ./_docker
+        volumes:
+            - ./:/var/www
+        container_name: app
+        depends_on:
+            - db
+
+    db:
+        image: postgres
+        volumes:
+            - ./tmp/db:/var/lib/postgresql
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_DB=comics
+        ports:
+            - 5432:5432
+        container_name: db
