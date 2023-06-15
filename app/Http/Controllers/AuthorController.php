@@ -27,6 +27,6 @@ class AuthorController extends Controller
         }
         auth()->user()->roles()->attach(Role::where('slug', 'author')->first());
         auth()->user()->author()->create($data);
-        return response("OK", 200);
+        return response([], 200);
     }
 }

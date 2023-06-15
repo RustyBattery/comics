@@ -46,7 +46,7 @@ class AuthController extends Controller
     {
         $user = auth()->user();
         $user->tokens()->delete();
-        return response("OK", 200);
+        return response([], 200);
     }
 
 }
