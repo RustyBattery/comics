@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\AuthResource;
 use App\Http\Resources\RoleResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -21,8 +22,7 @@ class AuthController extends Controller
         $data = $request->validated();
         $data["password"] = Hash::make($data["password"]);
         $user = User::query()->create($data);
-        $token = $user->createToken("auth");
-        return response(["token" => $token->plainTextToken], 200);
+        return response(AuthResource::make($user), 200);
     }
 
     public function login(LoginRequest $request)
@@ -31,8 +31,7 @@ class AuthController extends Controller
         $user = User::query()->where("email", $data["email"])->first();
         if (Hash::check($data["password"], $user->password)) {
             $user->tokens()->delete();
-            $token = $user->createToken("auth");
-            return response(["token" => $token->plainTextToken, "roles" => RoleResource::collection($user->roles()->get())], 200);
+            return response(AuthResource::make($user), 200);
         }
         return response(["message" => "Invalid password!"], 422);
     }
