@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Storage;
 
 class AuthorController extends Controller
 {
+    public function index(){
+        return response(["message" => "authors list"], 200);
+    }
+
     public function get(){
         if(!auth()->user()->author()->first()){
             return response(["message" => "This user is not the author!"], 403);

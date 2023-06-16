@@ -16,6 +16,7 @@ services:
         build: ./_docker
         volumes:
             - ./:/var/www
+            - ./_docker/ImageMagick/policy.xml:/etc/ImageMagick-6/policy.xml
         container_name: app
         depends_on:
             - db

@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\ChapterController;
+use App\Http\Controllers\GenreController;
+use App\Http\Controllers\SubscriptionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,9 +30,38 @@ Route::prefix('auth')->group(function (){
 });
 
 Route::prefix('author')->middleware('auth:sanctum')->group(function (){
+    Route::get('/');//список авторов
     Route::post('register', [AuthorController::class, 'create']);
-    Route::get('profile', [AuthorController::class, 'get']);
-//    Route::middleware('role:author')->group(function (){
-//        Route::get('profile', [AuthorController::class, 'get']);
-//    });
+    Route::middleware('auth:sanctum')->group(function (){
+        Route::get('profile', [AuthorController::class, 'get']);
+        Route::prefix('subscription')->group(function (){
+            Route::post('/', [SubscriptionController::class, 'create']);
+        });
+        Route::prefix('book')->group(function (){
+            Route::post('/', [BookController::class, 'create']);
+            Route::post('/{book}/chapter', [ChapterController::class, 'create']);
+            Route::prefix('chapter')->group(function (){
+                //crud главы
+            });
+        });
+    });
 });
+
+
+Route::prefix('public')->group(function (){
+    Route::get('genre', [GenreController::class, 'index']);
+    Route::prefix('author')->group(function (){
+        Route::get('/', [AuthController::class, 'index']);
+        Route::prefix('/{author}')->group(function (){
+            Route::get('subscription', [SubscriptionController::class, 'get_author_subscriptions']);
+        });
+    });
+    //публичные методы на получение инфы
+});
+
+//   публичные
+// - жанры
+// - авторы
+// - книги
+// - главы книги
+// - страницы главы

@@ -20,4 +20,14 @@ class Author extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function books()
+    {
+        return $this->hasMany(Book::class);
+    }
 }
