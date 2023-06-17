@@ -20,6 +20,8 @@ RUN apt-get update; \
     docker-php-ext-enable imagick; \
     apt-get install ghostscript;
 
+COPY ./php/php.ini /usr/local/etc/php/conf.d/php.ini
+
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN curl -sS https://getcomposer.org/installer | php -- \
     --filename=composer \
