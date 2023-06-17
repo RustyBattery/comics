@@ -29,6 +29,7 @@ class BookCreateRequest extends FormRequest
             "photo" => "nullable|image",
             "status" => "required|in:in_process,finished",
             "price" => "nullable|integer",
+            "genres.*" => "nullable|exists:genres,id"
         ];
     }
 }

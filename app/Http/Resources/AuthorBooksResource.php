@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SubscriptionResource extends JsonResource
+class AuthorBooksResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +16,13 @@ class SubscriptionResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'author_id' => $this->author_id,
             'name' => $this->name,
             'description' => $this->description,
             'photo' => $this->photo ? env('APP_URL').'/'.$this->photo : null,
+            'status' => $this->status,
+            'rating' => null,
+            'genres' => GenreResource::collection($this->genres()->get()),
+            'is_free' => $this->price || $this->chapters()->whereNotNull('subscription_id')->count() ? false : true,
             'price' => $this->price,
         ];
     }

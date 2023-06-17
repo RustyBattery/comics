@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthorCreateRequest;
+use App\Http\Resources\AuthorResource;
+use App\Models\Author;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -13,11 +15,8 @@ class AuthorController extends Controller
         return response(["message" => "authors list"], 200);
     }
 
-    public function get(){
-        if(!auth()->user()->author()->first()){
-            return response(["message" => "This user is not the author!"], 403);
-        }
-        return response(["author" => auth()->user()->author()->first()], 200);
+    public function get(Author $author){
+        return response(AuthorResource::make($author), 200);
     }
 
     public function create(AuthorCreateRequest $request){

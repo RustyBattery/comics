@@ -33,16 +33,14 @@ Route::prefix('author')->middleware('auth:sanctum')->group(function (){
     Route::get('/');//список авторов
     Route::post('register', [AuthorController::class, 'create']);
     Route::middleware('auth:sanctum')->group(function (){
-        Route::get('profile', [AuthorController::class, 'get']);
+//        Route::get('profile', [AuthorController::class, 'get']);
         Route::prefix('subscription')->group(function (){
             Route::post('/', [SubscriptionController::class, 'create']);
         });
         Route::prefix('book')->group(function (){
             Route::post('/', [BookController::class, 'create']);
+            Route::get('/moderation', [BookController::class, 'get_moderation']);
             Route::post('/{book}/chapter', [ChapterController::class, 'create']);
-            Route::prefix('chapter')->group(function (){
-                //crud главы
-            });
         });
     });
 });
@@ -53,10 +51,15 @@ Route::prefix('public')->group(function (){
     Route::prefix('author')->group(function (){
         Route::get('/', [AuthController::class, 'index']);
         Route::prefix('/{author}')->group(function (){
+            Route::get('/', [AuthorController::class, 'get']);
             Route::get('subscription', [SubscriptionController::class, 'get_author_subscriptions']);
+            Route::prefix('book')->group(function (){
+                Route::get('/', [BookController::class, 'get_author_books']);
+                Route::get('/{book}', []);
+            });
         });
     });
-    //публичные методы на получение инфы
+
 });
 
 //   публичные
