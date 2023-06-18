@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BaseRequest;
 use App\Http\Requests\BookCreateRequest;
 use App\Http\Resources\AuthorBooksResource;
 use App\Models\Author;
@@ -16,15 +17,25 @@ class BookController extends Controller
 
     }
 
-    public function get_author_books(Author $author){
-        if(auth()->user() && auth()->user()->author()->id == $author->id){
-            $books = $author->books()->all();
+    public function get_author_books(Author $author,  BaseRequest $request){
+        $data = $request->validated();
+        $query = $author->books();
+        if(isset($data['filters'])){
+            foreach ($data['filters'] as $filter){
+                if(count($filter['values']) > 1){
+                    $query->whereIn($filter['field'], $filter['values']);
+                }
+                else{
+                    $query->where($filter['field'], $filter['operator'], $filter['values'][0]);
+                }
+            }
         }
-        else{
-            $books = $author->books()->whereHas('chapters', function (Builder $query) {
+        if(!auth()->user() || auth()->user()->author()->first()->id != $author->id){
+            $query->whereHas('chapters', function (Builder $query) {
                 $query->where('status', 'approved');
-            })->get();
+            });
         }
+        $books = $query->get();
         return response(AuthorBooksResource::collection($books), 200);
     }
 

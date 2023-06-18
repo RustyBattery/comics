@@ -33,7 +33,6 @@ Route::prefix('author')->middleware('auth:sanctum')->group(function (){
     Route::get('/');//список авторов
     Route::post('register', [AuthorController::class, 'create']);
     Route::middleware('auth:sanctum')->group(function (){
-//        Route::get('profile', [AuthorController::class, 'get']);
         Route::prefix('subscription')->group(function (){
             Route::post('/', [SubscriptionController::class, 'create']);
         });
@@ -53,18 +52,8 @@ Route::prefix('public')->group(function (){
         Route::prefix('/{author}')->group(function (){
             Route::get('/', [AuthorController::class, 'get']);
             Route::get('subscription', [SubscriptionController::class, 'get_author_subscriptions']);
-            Route::prefix('book')->group(function (){
-                Route::get('/', [BookController::class, 'get_author_books']);
-                Route::get('/{book}', []);
-            });
+            Route::get('book', [BookController::class, 'get_author_books']);
         });
     });
 
 });
-
-//   публичные
-// - жанры
-// - авторы
-// - книги
-// - главы книги
-// - страницы главы

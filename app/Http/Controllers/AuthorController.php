@@ -29,7 +29,7 @@ class AuthorController extends Controller
             $data['photo'] = 'storage/'.$imagePath;
         }
         auth()->user()->roles()->attach(Role::where('slug', 'author')->first());
-        auth()->user()->author()->create($data);
-        return response([], 200);
+        $author = auth()->user()->author()->create($data);
+        return response(["author_id" => $author->id], 200);
     }
 }
