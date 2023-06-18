@@ -50,12 +50,10 @@ class BookController extends Controller
             $data['photo'] = 'storage/'.$imagePath;
         }
         $book = $author->books()->create($data);
-        $book->genres()->attach($data['genres']);
+        if(isset($data['genres'])){
+            $book->genres()->attach($data['genres']);
+        }
 
         return response(AuthorBooksResource::make($book), 200);
-    }
-
-    public function get_moderation(){
-
     }
 }
