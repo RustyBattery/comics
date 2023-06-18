@@ -30,4 +30,9 @@ class Author extends Model
     {
         return $this->hasMany(Book::class);
     }
+
+    public function chapters()
+    {
+        return $this->hasManyThrough(Chapter::class, Book::class);
+    }
 }

@@ -30,7 +30,6 @@ Route::prefix('auth')->group(function (){
 });
 
 Route::prefix('author')->middleware('auth:sanctum')->group(function (){
-    Route::get('/');//список авторов
     Route::post('register', [AuthorController::class, 'create']);
     Route::middleware('auth:sanctum')->group(function (){
         Route::prefix('subscription')->group(function (){
@@ -38,7 +37,7 @@ Route::prefix('author')->middleware('auth:sanctum')->group(function (){
         });
         Route::prefix('book')->group(function (){
             Route::post('/', [BookController::class, 'create']);
-            Route::get('/moderation', [BookController::class, 'get_moderation']);
+            Route::get('/moderation', [ChapterController::class, 'get_moderation']);
             Route::post('/{book}/chapter', [ChapterController::class, 'create']);
         });
     });
@@ -55,5 +54,8 @@ Route::prefix('public')->group(function (){
             Route::get('book', [BookController::class, 'get_author_books']);
         });
     });
-
+    Route::prefix('book')->group(function (){
+        Route::get('/', []);
+        Route::get('/{book}', []);
+    });
 });

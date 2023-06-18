@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ChapterCreateRequest;
+use App\Http\Resources\ModerationResource;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -33,5 +34,14 @@ class ChapterController extends Controller
             }
         }
         return response([], 200);
+    }
+
+    public function get_moderation(){
+        if(!auth()->user()->author()->first()){
+            return response(["message" => "This user is not the author!"], 403);
+        }
+        $author =  auth()->user()->author()->first();
+        $chapters = $author->chapters()->orderByDesc('created_at')->get();
+        return response(ModerationResource::collection($chapters), 200);
     }
 }
