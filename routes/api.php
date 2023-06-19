@@ -47,7 +47,7 @@ Route::prefix('author')->middleware('auth:sanctum')->group(function (){
 Route::prefix('public')->group(function (){
     Route::get('genre', [GenreController::class, 'index']);
     Route::prefix('author')->group(function (){
-        Route::get('/', [AuthController::class, 'index']);
+        Route::get('/', [AuthorController::class, 'index']);
         Route::prefix('/{author}')->group(function (){
             Route::get('/', [AuthorController::class, 'get']);
             Route::get('subscription', [SubscriptionController::class, 'get_author_subscriptions']);
