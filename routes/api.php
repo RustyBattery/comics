@@ -56,9 +56,9 @@ Route::prefix('public')->group(function (){
     });
     Route::prefix('book')->group(function (){
         Route::get('/', [BookController::class, 'index']);
-        Route::get('/{book}', []);
+        Route::get('/{book}', [BookController::class, 'get']);
     });
-    Route::get('chapter/{chapter}', []);
+    Route::get('chapter/{chapter}', [ChapterController::class, 'get']);
 });
 
 Route::prefix('user')->group(function (){

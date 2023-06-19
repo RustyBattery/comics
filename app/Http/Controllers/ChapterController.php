@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BaseRequest;
 use App\Http\Requests\ChapterCreateRequest;
+use App\Http\Resources\ChapterResource;
 use App\Http\Resources\ModerationResource;
 use App\Models\Book;
 use App\Models\Chapter;
@@ -15,8 +16,8 @@ use Spatie\PdfToImage\Pdf;
 
 class ChapterController extends Controller
 {
-    public function get(){
-
+    public function get(Chapter $chapter){
+        return response(ChapterResource::make($chapter), 200);
     }
 
     public function create(Book $book, ChapterCreateRequest $request){

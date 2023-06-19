@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BaseRequest;
 use App\Http\Requests\BookCreateRequest;
 use App\Http\Resources\AuthorBooksResource;
+use App\Http\Resources\BookResource;
 use App\Models\Author;
 use App\Models\Book;
 use Illuminate\Http\Request;
@@ -57,8 +58,8 @@ class BookController extends Controller
         return response(AuthorBooksResource::collection($books), 200);
     }
 
-    public function get(){
-
+    public function get(Book $book){
+        return response(BookResource::make($book), 200);
     }
 
     public function get_author_books(Author $author,  BaseRequest $request){

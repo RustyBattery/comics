@@ -20,13 +20,11 @@ class BookResource extends JsonResource
             'description' => $this->description,
             'photo' => $this->photo ? env('APP_URL').'/'.$this->photo : null,
             'status' => $this->status,
-            'approved_chapters' => $this->chapters()->where('status', 'approved')->count(),
-            'pending_chapters' => $this->chapters()->where('status', 'pending')->count(),
-            'declined_chapters' => $this->chapters()->where('status', 'declined')->count(),
             'rating' => null,
             'genres' => GenreResource::collection($this->genres()->get()),
             'is_free' => $this->price || $this->chapters()->whereNotNull('subscription_id')->count() ? false : true,
             'price' => $this->price,
+            'chapters' => ChapterListResource::collection($this->chapters()->orderBy('number')->get()),
         ];
     }
 }
