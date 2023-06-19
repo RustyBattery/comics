@@ -55,7 +55,7 @@ Route::prefix('public')->group(function (){
         });
     });
     Route::prefix('book')->group(function (){
-        Route::get('/', []);
+        Route::get('/', [BookController::class, 'index']);
         Route::get('/{book}', []);
     });
 });
