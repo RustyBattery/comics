@@ -18,6 +18,7 @@ class ChapterListResource extends JsonResource
             "id" => $this->id,
             "number" => $this->number,
             "name" => $this->name,
+            'rating' => null,
             "is_available" => $this->number > 2 ? false : true,
         ];
     }

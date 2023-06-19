@@ -21,6 +21,7 @@ class ChapterResource extends JsonResource
             "description" => $this->description,
             "subscription" => SubscriptionResource::make($this->subscription()->first()),
             "count_page" => $this->pages()->count(),
+            'rating' => null,
             "is_available" => $this->number > 2 ? false : true,
             "pages" => $this->number > 2 ? null : PageResource::collection($this->pages()->get()),
         ];
