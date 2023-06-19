@@ -15,8 +15,12 @@ class ModerationResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
+
+            'book_id' => $this->book->id,
+            'book_name' => $this->book->name,
+            'chapter_id' => $this->id,
+            'chapter_name' => $this->name,
+            'chapter_number' => $this->number,
             'status' => $this->status,
             'sending_time' => $this->created_at,
             'update_time' => $this->updated_at,

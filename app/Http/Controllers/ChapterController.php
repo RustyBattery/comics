@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BaseRequest;
 use App\Http\Requests\ChapterCreateRequest;
 use App\Http\Resources\ModerationResource;
 use App\Models\Book;
@@ -36,12 +37,26 @@ class ChapterController extends Controller
         return response([], 200);
     }
 
-    public function get_moderation(){
+    public function get_moderation(BaseRequest $request){
+        $data = $request->validated();
         if(!auth()->user()->author()->first()){
             return response(["message" => "This user is not the author!"], 403);
         }
         $author =  auth()->user()->author()->first();
-        $chapters = $author->chapters()->orderByDesc('created_at')->get();
+
+        $query = $author->chapters();
+        if(isset($data['filters'])){
+            foreach ($data['filters'] as $filter){
+                if(count($filter['values']) > 1){
+                    $query->whereIn($filter['field'], $filter['values']);
+                }
+                else{
+                    $query->where('chapters.'.$filter['field'], $filter['operator'], $filter['values'][0]);
+                }
+            }
+        }
+
+        $chapters = $query->orderByDesc('created_at')->get();
         return response(ModerationResource::collection($chapters), 200);
     }
 }
