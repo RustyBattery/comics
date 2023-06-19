@@ -6,6 +6,7 @@ use App\Http\Requests\BaseRequest;
 use App\Http\Requests\ChapterCreateRequest;
 use App\Http\Resources\ModerationResource;
 use App\Models\Book;
+use App\Models\Chapter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -58,5 +59,11 @@ class ChapterController extends Controller
 
         $chapters = $query->orderByDesc('created_at')->get();
         return response(ModerationResource::collection($chapters), 200);
+    }
+
+    public function approve(Chapter $chapter){
+        $chapter->status = "approved";
+        $chapter->save();
+        return response([], 200);
     }
 }

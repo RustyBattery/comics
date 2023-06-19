@@ -58,4 +58,11 @@ Route::prefix('public')->group(function (){
         Route::get('/', [BookController::class, 'index']);
         Route::get('/{book}', []);
     });
+    Route::get('chapter/{chapter}', []);
 });
+
+Route::prefix('user')->group(function (){
+
+});
+
+Route::post('approve/{chapter}', [ChapterController::class, 'approve']);
