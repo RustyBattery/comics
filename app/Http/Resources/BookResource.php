@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Author;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class BookResource extends JsonResource
@@ -17,7 +18,7 @@ class BookResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'author' => ["id" => $this->author->id, "nickname" => $this->author->nickname],
+            'author' => AuthorShortResource::make($this->author),
             'description' => $this->description,
             'photo' => $this->photo ? env('APP_URL').'/'.$this->photo : null,
             'status' => $this->status,

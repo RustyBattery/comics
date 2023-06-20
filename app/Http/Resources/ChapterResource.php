@@ -19,6 +19,7 @@ class ChapterResource extends JsonResource
             "number" => $this->number,
             "name" => $this->name,
             "description" => $this->description,
+            'author' => AuthorShortResource::make($this->author()),
             "subscription" => SubscriptionResource::make($this->subscription()->first()),
             "count_page" => $this->pages()->count(),
             'rating' => null,

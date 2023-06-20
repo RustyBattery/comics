@@ -33,4 +33,8 @@ class Chapter extends Model
     {
         return $this->hasMany(Page::class);
     }
+
+    public function author(){
+        return $this->book->author;
+    }
 }
