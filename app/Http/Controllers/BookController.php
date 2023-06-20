@@ -46,7 +46,7 @@ class BookController extends Controller
         if(isset($data['search'])){
             $query->where(function ($query) use ($data){
                 foreach ($data['search']['fields'] as $field){
-                    $query->orWhere($field, 'LIKE', '%'.$data['search']['value'].'%');
+                    $query->orWhere($field, 'ilike', '%'.$data['search']['value'].'%');
                 }
             });
         }

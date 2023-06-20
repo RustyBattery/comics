@@ -19,6 +19,7 @@ class ChapterListResource extends JsonResource
             "number" => $this->number,
             "name" => $this->name,
             'rating' => null,
+            "subscription" => SubscriptionResource::make($this->subscription()->first()),
             "is_available" => $this->number > 2 ? false : true,
         ];
     }

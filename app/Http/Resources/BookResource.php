@@ -17,6 +17,7 @@ class BookResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'author' => ["id" => $this->author->id, "nickname" => $this->author->nickname],
             'description' => $this->description,
             'photo' => $this->photo ? env('APP_URL').'/'.$this->photo : null,
             'status' => $this->status,
@@ -24,7 +25,7 @@ class BookResource extends JsonResource
             'genres' => GenreResource::collection($this->genres()->get()),
             'is_free' => $this->price || $this->chapters()->whereNotNull('subscription_id')->count() ? false : true,
             'price' => $this->price,
-            'chapters' => ChapterListResource::collection($this->chapters()->orderBy('number')->get()),
+            'chapters' => ChapterListResource::collection($this->chapters()->where('status', 'approved')->orderBy('number')->get()),
         ];
     }
 }
