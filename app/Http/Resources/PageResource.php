@@ -17,7 +17,7 @@ class PageResource extends JsonResource
         return [
             "id" => $this->id,
             "number" => $this->number,
-            "url" => $this->url,
+            "url" => $this->url ? env('APP_URL').'/'.$this->url : null,
         ];
     }
 }
