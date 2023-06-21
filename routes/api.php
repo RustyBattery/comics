@@ -65,6 +65,7 @@ Route::prefix('public')->group(function (){
 
 Route::prefix('user')->middleware('auth:sanctum')->group(function (){
     Route::prefix('subscription')->group(function (){
+        Route::get('/', [SubscriptionController::class, 'get_user_subscription']);
         Route::post('/{subscription}', [UserController::class, 'subscribe']);
     });
 });
