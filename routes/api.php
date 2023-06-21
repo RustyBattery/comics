@@ -6,6 +6,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -61,8 +62,10 @@ Route::prefix('public')->group(function (){
     Route::get('chapter/{chapter}', [ChapterController::class, 'get']);
 });
 
-Route::prefix('user')->group(function (){
-
+Route::prefix('user')->middleware('auth:sanctum')->group(function (){
+    Route::prefix('subscription')->group(function (){
+        Route::post('/{subscription}', [UserController::class, 'subscribe']);
+    });
 });
 
 Route::post('approve/{chapter}', [ChapterController::class, 'approve']);

@@ -36,4 +36,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Author::class);
     }
+
+    public function subscriptions()
+    {
+        return $this->belongsToMany(Subscription::class, 'user_subscriptions')->as('subscription')->withPivot('payment_id', 'date_end')->withTimestamps();
+    }
 }

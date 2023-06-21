@@ -26,4 +26,9 @@ class Subscription extends Model
     {
         return $this->hasMany(Chapter::class);
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_subscriptions')->withPivot('payment_id', 'date_end')->withTimestamps();
+    }
 }
