@@ -7,6 +7,7 @@ use App\Http\Requests\BaseRequest;
 use App\Http\Resources\AuthorListResource;
 use App\Http\Resources\AuthorResource;
 use App\Http\Resources\AuthorStatisticsResource;
+use App\Http\Resources\UserShortResource;
 use App\Models\Author;
 use App\Models\Role;
 use Illuminate\Http\Request;
@@ -51,5 +52,13 @@ class AuthorController extends Controller
             return response(["message" => "This user is not the author!"], 403);
         }
         return response(AuthorStatisticsResource::make(auth()->user()->author()->first()), 200);
+    }
+
+    public function get_followers(){
+        if(!auth()->user()->author()->first()){
+            return response(["message" => "This user is not the author!"], 403);
+        }
+        $author = auth()->user()->author()->first();
+        return response(UserShortResource::collection($author->followers()->get()), 200);
     }
 }

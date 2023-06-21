@@ -42,6 +42,7 @@ Route::prefix('author')->middleware('auth:sanctum')->group(function (){
             Route::post('/{book}/chapter', [ChapterController::class, 'create']);
         });
         Route::get('/statistics', [AuthorController::class, 'statistics']);
+        Route::get('/followers', [AuthorController::class, 'get_followers']);
     });
 });
 
@@ -67,6 +68,10 @@ Route::prefix('user')->middleware('auth:sanctum')->group(function (){
     Route::prefix('subscription')->group(function (){
         Route::get('/', [SubscriptionController::class, 'get_user_subscription']);
         Route::post('/{subscription}', [UserController::class, 'subscribe']);
+    });
+    Route::prefix('author')->group(function (){
+        Route::post('/{author}/follow', [UserController::class, 'follow_author']);
+        Route::get('following', [UserController::class, 'get_favorite_authors']);
     });
 });
 

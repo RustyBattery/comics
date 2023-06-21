@@ -39,7 +39,7 @@ class Author extends Model
         return $this->hasManyThrough(Chapter::class, Book::class);
     }
 
-    public function following()
+    public function followers()
     {
         return $this->belongsToMany(User::class, 'user_favorite_authors')->withTimestamps();
     }
