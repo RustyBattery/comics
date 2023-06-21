@@ -39,7 +39,7 @@ class User extends Authenticatable
 
     public function subscriptions()
     {
-        return $this->belongsToMany(Subscription::class, 'user_subscriptions')->as('subscription')->withPivot('payment_id', 'date_end')->withTimestamps();
+        return $this->belongsToMany(Subscription::class, 'user_subscriptions')->withPivot('payment_id', 'date_end')->withTimestamps();
     }
 
     public function favoriteAuthors()
