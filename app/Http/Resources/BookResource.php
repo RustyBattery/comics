@@ -24,7 +24,7 @@ class BookResource extends JsonResource
             'status' => $this->status,
             'rating' => null,
             'genres' => GenreResource::collection($this->genres()->get()),
-            'is_free' => $this->price || $this->chapters()->whereNotNull('subscription_id')->count() ? false : true,
+            'is_free' => $this->price || $this->chapters()->whereNotNull('subscription_id')->where('status', 'approved')->count() ? false : true,
             'price' => $this->price,
             'chapters' => ChapterListResource::collection($this->chapters()->where('status', 'approved')->orderBy('number')->get()),
         ];

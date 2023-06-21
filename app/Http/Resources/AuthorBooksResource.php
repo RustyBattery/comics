@@ -25,7 +25,7 @@ class AuthorBooksResource extends JsonResource
             'declined_chapters' => $this->chapters()->where('status', 'declined')->count(),
             'rating' => null,
             'genres' => GenreResource::collection($this->genres()->get()),
-            'is_free' => $this->price || $this->chapters()->whereNotNull('subscription_id')->count() ? false : true,
+            'is_free' => $this->price || $this->chapters()->whereNotNull('subscription_id')->where('status', 'approved')->count() ? false : true,
             'price' => $this->price,
         ];
     }
