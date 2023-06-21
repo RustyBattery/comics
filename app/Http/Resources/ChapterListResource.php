@@ -18,6 +18,7 @@ class ChapterListResource extends JsonResource
         $min_subscription = $this->subscription()->first();
         $subscriptions = $min_subscription ? $this->author()->subscriptions()->where('price', '>=', $min_subscription->price)->pluck('id') : [];
         $is_available = (auth()->user() && auth()->user()->subscriptions()->whereIn('subscriptions.id', $subscriptions)->whereDate('user_subscriptions.date_end', '>', Carbon::now())->first()) || !$min_subscription ? true : false;
+        $is_available = $is_available || (auth()->user()?->author?->id == $this->author()->id)? true : false;
 
         return [
             "id" => $this->id,
