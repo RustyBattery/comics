@@ -21,6 +21,9 @@ class ChapterResource extends JsonResource
         $is_available = (auth()->user() && auth()->user()->subscriptions()->whereIn('subscriptions.id', $subscriptions)->whereDate('user_subscriptions.date_end', '>', Carbon::now())->first()) || !$min_subscription ? true : false;
         $is_available = $is_available || (auth()->user()?->author?->id == $this->author()->id)? true : false;
 
+        $book = $this->book()->first();
+        $chapters = $book->chapters->pluck('id');
+
         return [
             "id" => $this->id,
             "number" => $this->number,
@@ -32,8 +35,8 @@ class ChapterResource extends JsonResource
             'rating' => null,
             "is_available" => $is_available,
             "pages" => $is_available ? PageResource::collection($this->pages()->get()) : null,
-            "prev_chapter_id" => Chapter::where('status', 'approved')->where('number', $this->number - 1)->first()->id ?? null,
-            "next_chapter_id" => Chapter::where('status', 'approved')->where('number', $this->number + 1)->first()->id ?? null,
+            "prev_chapter_id" => Chapter::whereIn('id', $chapters)->where('status', 'approved')->where('number', $this->number - 1)->first()->id ?? null,
+            "next_chapter_id" => Chapter::whereIn('id', $chapters)->where('status', 'approved')->where('number', $this->number + 1)->first()->id ?? null,
         ];
     }
 }
