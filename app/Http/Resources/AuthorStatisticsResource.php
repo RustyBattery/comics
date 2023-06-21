@@ -19,7 +19,7 @@ class AuthorStatisticsResource extends JsonResource
             "withdraw_money" => $this->withdraw_money,
             "total_earned" => $this->balance + $this->withdraw_money,
             "subscribers" => $this->subscribers()->count(),
-            "followers" => $this->following()->count(),
+            "followers" => $this->followers()->count(),
         ];
     }
 }
