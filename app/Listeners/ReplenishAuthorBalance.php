@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\PaymentSuccess;
 use App\Events\UserSubscribe;
+use App\Models\Author;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -27,9 +28,9 @@ class ReplenishAuthorBalance
      */
     public function handle(PaymentSuccess $event)
     {
-        $subscription = $event->payment->subscription();
-        $author = $subscription->author()->first();
-        $author->balance += $subscription->price;
+        $amount = $event->payment->get_author_and_amount()['amount'];
+        $author = Author::find($event->payment->get_author_and_amount()['author_id']);
+        $author->balance += $amount;
         $author->save();
     }
 }

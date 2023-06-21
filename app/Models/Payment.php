@@ -30,7 +30,7 @@ class Payment extends Model
             "description" => $description
         ];
         $response = Http::withBasicAuth(env('YOOKASSA_ID'), env('YOOKASSA_KEY'))
-            ->withHeaders(['Idempotence-Key' => $this->id])
+            ->withHeaders(['Idempotence-Key' => $this->id + 1000])
             ->post('https://api.yookassa.ru/v3/payments', $body);
         $external_id = $response->json()['id'];
         $this->external_id = $external_id;
@@ -58,6 +58,21 @@ class Payment extends Model
     }
 
     public function subscription(){
-        return $this->hasMany(UserSubscription::class)->first()->subscription()->first();
+        return $this->hasMany(UserSubscription::class)->first()?->subscription()->first();
+    }
+
+    public function donation(){
+        return $this->hasMany(Donation::class)->first();
+    }
+
+    public function get_author_and_amount(){
+        $subscription = $this->subscription();
+        if($subscription){
+            return ["amount" => $subscription->price, "author_id" => $subscription->author->id];
+        }
+        $donation = $this->donation() ?? null;
+        if($donation){
+            return ["amount" => $donation->amount, "author_id" => $donation->author_id];
+        }
     }
 }

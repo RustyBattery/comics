@@ -46,4 +46,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Author::class, 'user_favorite_authors')->withTimestamps();
     }
+
+    public function donations()
+    {
+        return $this->hasMany(Donation::class);
+    }
 }

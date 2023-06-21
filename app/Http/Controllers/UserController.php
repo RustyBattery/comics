@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\UserSubscribe;
+use App\Http\Requests\UserDonationCreateCreateRequest;
 use App\Http\Requests\UserSubscriptionCreateRequest;
 use App\Http\Resources\AuthorListResource;
 use App\Models\Author;
@@ -37,5 +38,17 @@ class UserController extends Controller
     public function get_favorite_authors(){
         $user = auth()->user();
         return response([AuthorListResource::collection($user->favoriteAuthors()->get())], 200);
+    }
+
+    public function make_donation(Author $author, UserDonationCreateCreateRequest $request){
+        $data = $request->validated();
+        $data['author_id'] = $author->id;
+        $user = auth()->user();
+        $donation = $user->donations()->create($data);
+        $payment = Payment::create();
+        $donation->payment_id = $payment->id;
+        $donation->save();
+        $payment_link = $payment->init($donation->amount, $data['success_url'], UserSubscribe::class);
+        return response(["payment_link" => $payment_link], 200);
     }
 }

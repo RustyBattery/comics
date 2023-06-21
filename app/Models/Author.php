@@ -52,4 +52,9 @@ class Author extends Model
         }
         return $users;
     }
+
+    public function donations()
+    {
+        return $this->hasMany(Donation::class);
+    }
 }
