@@ -6,6 +6,7 @@ use App\Http\Requests\AuthorCreateRequest;
 use App\Http\Requests\BaseRequest;
 use App\Http\Resources\AuthorListResource;
 use App\Http\Resources\AuthorResource;
+use App\Http\Resources\AuthorStatisticsResource;
 use App\Models\Author;
 use App\Models\Role;
 use Illuminate\Http\Request;
@@ -43,5 +44,12 @@ class AuthorController extends Controller
         auth()->user()->roles()->attach(Role::where('slug', 'author')->first());
         $author = auth()->user()->author()->create($data);
         return response(["author_id" => $author->id], 200);
+    }
+
+    public function statistics(){
+        if(!auth()->user()->author()->first()){
+            return response(["message" => "This user is not the author!"], 403);
+        }
+        return response(AuthorStatisticsResource::make(auth()->user()->author()->first()), 200);
     }
 }

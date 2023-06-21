@@ -24,7 +24,8 @@ class AuthorResource extends JsonResource
             "books" => $this->books()->whereHas('chapters', function (Builder $query) {
                 $query->where('status', 'approved');
             })->count(),
-            "subscribers" => 0,
+            "subscribers" => $this->subscribers()->count(),
+            "is_following" => $this->following()->count(),
         ];
     }
 }

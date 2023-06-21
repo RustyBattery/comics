@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,6 +15,8 @@ class Author extends Model
         'nickname',
         'about',
         'photo',
+        'balance',
+        'withdraw_money',
     ];
 
     public function user()
@@ -34,5 +37,19 @@ class Author extends Model
     public function chapters()
     {
         return $this->hasManyThrough(Chapter::class, Book::class);
+    }
+
+    public function following()
+    {
+        return $this->belongsToMany(User::class, 'user_favorite_authors')->withTimestamps();
+    }
+
+    public function subscribers(){
+        $subscriptions = $this->subscriptions()->get();
+        $users = collect([]);
+        foreach ($subscriptions as $subscription){
+            $users = $users->merge($subscription->users()->with('subscriptions')->whereDate('user_subscriptions.date_end', '>', Carbon::now())->get());
+        }
+        return $users;
     }
 }

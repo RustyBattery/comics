@@ -3,9 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Database\Eloquent\Builder;
 
-class AuthorListResource extends JsonResource
+class AuthorStatisticsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +15,9 @@ class AuthorListResource extends JsonResource
     public function toArray($request)
     {
         return [
-            "id" => $this->id,
-            "nickname" => $this->nickname,
-            "photo" => $this->photo ? env('APP_URL').'/'.$this->photo : null,
-            "books" => $this->books()->whereHas('chapters', function (Builder $query) {
-                $query->where('status', 'approved');
-            })->count(),
+            "balance" => $this->balance,
+            "withdraw_money" => $this->withdraw_money,
+            "total_earned" => $this->balance + $this->withdraw_money,
             "subscribers" => $this->subscribers()->count(),
             "is_following" => $this->following()->count(),
         ];

@@ -41,6 +41,7 @@ Route::prefix('author')->middleware('auth:sanctum')->group(function (){
             Route::get('/moderation', [ChapterController::class, 'get_moderation']);
             Route::post('/{book}/chapter', [ChapterController::class, 'create']);
         });
+        Route::get('/statistics', [AuthorController::class, 'statistics']);
     });
 });
 
