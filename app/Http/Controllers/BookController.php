@@ -75,7 +75,7 @@ class BookController extends Controller
                 }
             }
         }
-        if(!auth()->user() || auth()->user()->author()->first()->id != $author->id){
+        if(!auth()->user() || auth()->user()->author()->first()?->id != $author->id){
             $query->whereHas('chapters', function (Builder $query) {
                 $query->where('status', 'approved');
             });
