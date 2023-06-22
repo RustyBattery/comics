@@ -58,7 +58,8 @@ class Payment extends Model
     }
 
     public function subscription(){
-        return $this->hasMany(UserSubscription::class)->first()?->subscription()->first();
+        $user_subscription = $this->hasMany(UserSubscription::class)->first();
+        return $user_subscription ? $user_subscription->subscription()->first() : null;
     }
 
     public function donation(){
