@@ -37,7 +37,7 @@ class UserController extends Controller
 
     public function get_favorite_authors(){
         $user = auth()->user();
-        return response([AuthorListResource::collection($user->favoriteAuthors()->get())], 200);
+        return response(AuthorListResource::collection($user->favoriteAuthors()->get()), 200);
     }
 
     public function make_donation(Author $author, UserDonationCreateCreateRequest $request){
