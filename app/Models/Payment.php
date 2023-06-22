@@ -66,7 +66,7 @@ class Payment extends Model
     }
 
     public function get_author_and_amount(){
-        $subscription = $this->subscription();
+        $subscription = $this->subscription() ?? null;
         if($subscription){
             return ["amount" => $subscription->price, "author_id" => $subscription->author->id];
         }
